@@ -1,6 +1,6 @@
 # GTI IP Reputation Node
 
-A custom authentication node for PingAM and PingOne Advanced Identity Cloud (PingAIC) that checks the client's IP address against Google Threat Intelligence (VirusTotal) and routes the journey based on the verdict.
+A custom authentication node for PingAM that checks the client's IP address against Google Threat Intelligence (VirusTotal) and routes the journey based on the verdict.
 
 ## Overview
 
@@ -33,15 +33,6 @@ The node resolves the client IP in this order:
 | Private/reserved address (`10.x`, `127.x`, `169.254.x`, `192.168.x`, `172.16–31.x`, `fe80:`, `::1`, `fc00–fdff:`) | `clean` (no API call; shared state `gtiVerdict=internal`) |
 
 The `gti_assessment` check requires the `x-tool` request header (sent automatically, configurable below); it is optional at runtime — if GTI has not assessed the IP, the verdict falls through to the analysis-stats thresholds.
-
-## Compatibility
-
-| Product | Versions |
-|---|---|
-| PingAM | 8.0.2 and later |
-| PingOne Advanced Identity Cloud | All current tenants |
-
-Built against the PingAM 8.0.2 node SDK (Java 17 bytecode).
 
 ## Outcomes
 
@@ -91,34 +82,12 @@ Nothing is written on the `error` outcome.
 
 Whether the `error` outcome fails open (continue to `Success`) or fails closed (route to `Failure`) is journey wiring, not node behavior — wire it according to your risk appetite.
 
-## Journey example
-
-```
-Start → [Username/Password collection] → [Data Store Decision] → [GTI IP Reputation]
-                                                                    ├─ clean      → Success
-                                                                    ├─ suspicious → [Step-up auth / MFA]
-                                                                    ├─ malicious  → Failure
-                                                                    └─ error      → Success or Failure (your policy)
-```
-
-To surface the verdict in session claims, map the shared-state keys to session properties downstream of this node.
-
 ## Installation
 
 1. Obtain the node jar (`wiz-gti-marketplace-nodes-<version>.jar` — this jar also contains the companion Wiz nodes; see Related nodes).
-2. Copy it into `webapps/openam/WEB-INF/lib/` (PingAM) or deploy per your PingAIC packaging process.
+2. Copy it into `webapps/openam/WEB-INF/lib/` (PingAM) 
 3. Restart the AM web application container.
 4. The node appears in the journey designer as **Google Threat Intelligence (VirusTotal) IP reputation check**.
-
-## Building from source
-
-Requirements: JDK 17+, Maven 3.8+, and Ping Identity repository credentials (Backstage subscription) configured in `~/.m2/settings.xml` for `https://maven.forgerock.org/artifactory/private-releases`.
-
-```bash
-mvn clean package
-```
-
-The jar is produced in `target/`.
 
 ## Related nodes
 
