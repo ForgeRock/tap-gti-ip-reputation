@@ -51,7 +51,7 @@ The `gti_assessment` check requires the `x-tool` request header (sent automatica
 | GTI Base URL | String | No | `https://www.virustotal.com/api/v3/ip_addresses/` | Base URL of the GTI IP address API. |
 | Malicious Threshold | Number | No | `2` | `last_analysis_stats.malicious` at or above this value → `malicious`. |
 | Suspicious Threshold | Number | No | `5` | `last_analysis_stats.suspicious` at or above this value → `suspicious`. |
-| X-Tool | String | No | `ping.aic.gti-ip-node.1.0.0` | Value sent in the `x-tool` header (required by GTI to receive `gti_assessment` data). |
+| X-Tool | String | No | `ping.am.gti-ip-node.1.0.0` | Value sent in the `x-tool` header (required by GTI to receive `gti_assessment` data). |
 
 ## Shared state
 
